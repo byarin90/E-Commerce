@@ -1,7 +1,6 @@
 import Jwt from "jsonwebtoken";
-import { config } from "dotenv";
+import secret from "../config/secret.js";
 
-config();
 
 export const authUser = (req, res, next) => {
     try {
@@ -15,7 +14,7 @@ export const authUser = (req, res, next) => {
         //? Decode token and verify it
         //TODO: Verify token - check if token is valid and not expired
         //Get Payload from token
-        const decodeingToken = Jwt.verify(token, process.env.JWT_SECRET);
+        const decodeingToken = Jwt.verify(token, secret.JWT_SECRET);
         //?Send the payload to router in the memory from req!!
         req.tokenData = decodeingToken;
         //?Next to router from the middleware
@@ -37,7 +36,7 @@ export const authAdmin = (req, res, next) => {
         //? Decode token and verify it
         //TODO: Verify token - ccheck if token is valid and not expired
         //Get Payload from token
-        const decodeingToken = Jwt.verify(token, process.env.JWT_SECRET);
+        const decodeingToken = Jwt.verify(token, secret.JWT_SECRET);
         if (decodeingToken.role === "admin") {
             //?Send the payload to router in the memory from req!!
             req.tokenData = decodeingToken;

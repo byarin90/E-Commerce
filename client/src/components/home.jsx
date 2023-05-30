@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import useAuth from '../shared/hooks/useAuth'
 
 const Home = () => {
 /**
@@ -36,6 +37,9 @@ const Home = () => {
   background-size: cover - bg-cover
   background-position: center - bg-center
 */
+
+  const {user} = useAuth()
+  console.log(user)
   return (
     <div>
       <h1>Home</h1>

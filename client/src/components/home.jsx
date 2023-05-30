@@ -1,7 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import useAuth from '../shared/hooks/useAuth'
+import Modal from '../shared/components/modals/modal'
+import { SignUp } from './auth/signUp'
 
 const Home = () => {
+
 /**
  * p - padding
  * m - margin
@@ -38,11 +41,17 @@ const Home = () => {
   background-position: center - bg-center
 */
 
-  const {user} = useAuth()
-  console.log(user)
+  const {user,modal:{isSignIn,show,showHideModal}} = useAuth()
+  console.log(isSignIn,show)
+ 
+  const [open, setOpen] = useState(true)
   return (
     <div>
       <h1>Home</h1>
+
+      <Modal open={show} >
+          <SignUp  showHideModal={showHideModal}/>
+      </Modal>
     </div>
   )
 }

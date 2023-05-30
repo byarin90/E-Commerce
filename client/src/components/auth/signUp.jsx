@@ -7,7 +7,7 @@ import { authValidation } from '../../shared/validation/authValidation'
 import { fetchSignUp } from '../../shared/services/serviceAuth'
 import Loading from '../../shared/components/loading'
 
-export const SignUp = () => {
+export const SignUp = ({showHideModal}) => {
     // Reack hook form
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: joiResolver(authValidation.registerSchema) })
     //? getValues() : get the values of the input form by register name
@@ -33,6 +33,9 @@ export const SignUp = () => {
         try {
             const { data } = await fetchSignUp(_bodyData)
             console.log(data)
+            if(data._id){
+                showHideModal()
+            }
         } catch (error) {
             console.log(error.data.err_msg)
             setError(error.data.err_msg)
@@ -133,6 +136,7 @@ export const SignUp = () => {
                         </div>
 
                         <div>
+                            <button type='button' onClick={()=>showHideModal()}>Close</button>
                             <button
                                 type="submit"
                                 className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

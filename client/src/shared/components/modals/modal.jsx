@@ -1,7 +1,5 @@
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { useDispatch } from 'react-redux'
-import useAuth from '../../hooks/useAuth'
 
 export default function Modal({children,open}) {
 

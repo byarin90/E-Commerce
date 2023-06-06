@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     authModal:{
-        show: true,
+        show: false,
         isSignIn:false
     }
 }

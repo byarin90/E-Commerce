@@ -48,9 +48,6 @@ const Home = () => {
     <div>
       <h1>Home</h1>
 
-      <Modal open={show} >
-          <SignUp  showHideModal={showHideModal}/>
-      </Modal>
     </div>
   )
 }

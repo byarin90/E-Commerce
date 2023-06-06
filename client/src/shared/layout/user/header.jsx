@@ -2,6 +2,9 @@ import { Fragment } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useNavigate } from 'react-router-dom'
+import useAuth from '../../hooks/useAuth'
+import Modal from '../../components/modals/modal'
+import { SignUp } from '../../../components/auth/signUp'
 // Main navigation navigation tabs
 const navigation = [
     { name: 'Home', href: '/', current: true },
@@ -21,6 +24,8 @@ function classNames(...classes) {
 
 export const Header = () => {
     const nav = useNavigate()
+    const { user, modal: { isSignIn, show, showHideModal } } = useAuth()
+
     return (
         <Disclosure as="nav" className="bg-gray-800">
             {({ open }) => (
@@ -142,6 +147,10 @@ export const Header = () => {
                             ))}
                         </div>
                     </Disclosure.Panel>
+
+                    <Modal open={show} >
+                        <SignUp showHideModal={showHideModal} />
+                    </Modal>
                 </>
             )}
         </Disclosure>

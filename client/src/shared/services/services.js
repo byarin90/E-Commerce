@@ -6,6 +6,7 @@ export const getApi = async(url) => {
         const res = await axios({
             method: 'GET',
             url: url,
+            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -23,6 +24,7 @@ export const postApi = async(url, bodyData) => {
             method: 'POST',
             url: url,
             data: bodyData,
+            withCredentials: true,
             headers: {
                 'Content-Type': 'application/json',
             }

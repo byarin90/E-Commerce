@@ -62,7 +62,9 @@ const authCtrl = {
             //?User is found and password is correct
             // TODO: Create a token
             const token = createToken(user)
-            return res.status(200).json({ token })
+                //? Send the token in a cookie
+            res.cookie('token', token, { httpOnly: true, sameSite: "lax" });
+            res.status(200).json({ message: "Logged in" });
         } catch (err) {
             console.log(err)
             return res.status(500).json({ err_msg: err })

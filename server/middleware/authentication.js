@@ -4,9 +4,10 @@ import secret from "../config/secret.js";
 
 export const authUser = (req, res, next) => {
     try {
-        //? Get token from header ('Authorization')
-        const token = req.header('Authorization');
-        //! Check if token isExsist
+        //? Get token from cookie
+        const token = req.cookies.token
+        console.log(token)
+            //! Check if token isExsist
         if (!token) {
             return res.status(401).json({ err_msg: "you don't have a token for this end-point" })
         }

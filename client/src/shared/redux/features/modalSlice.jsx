@@ -13,10 +13,22 @@ const modalSlice = createSlice({
     reducers: {
         // Reducers
         showAuthModal(state, action){
-            state.authModal.show = !state.authModal.show
+            state.authModal.show = true
+        },
+        closeAuthModal(state, action){
+            state.authModal.show = false
+        },
+        toSignIn(state, action){
+            state.authModal.isSignIn = true
+        },
+        toSignUp(state, action){
+            state.authModal.isSignIn = false
+        },
+        toggleIsSignIn(state, action){
+            state.authModal.isSignIn = !state.authModal.isSignIn
         }
     }
 })
 
-export const {showAuthModal} = modalSlice.actions
+export const {showAuthModal,closeAuthModal,toSignIn,toSignUp,toggleIsSignIn} = modalSlice.actions
 export default modalSlice.reducer;

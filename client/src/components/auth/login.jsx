@@ -1,15 +1,18 @@
-import { LockClosedIcon,XMarkIcon } from '@heroicons/react/20/solid'
+import { LockClosedIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { joiResolver } from '@hookform/resolvers/joi'
 import { authValidation } from '../../shared/validation/authValidation'
-import { fetchSignUp } from '../../shared/services/serviceAuth'
+import { fetchSignIn, fetchSignUp } from '../../shared/services/serviceAuth'
 import Loading from '../../shared/components/loading'
+import useAuth from '../../shared/hooks/useAuth'
 
-export const SignIn = ({showHideModal}) => {
+export const SignIn = ({ }) => {
+    const { modal: { hideModal,changeModalToggle } } = useAuth()
+
     // Reack hook form
-    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: joiResolver(authValidation.registerSchema) })
+    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: joiResolver(authValidation.loginSchema) })
     //? getValues() : get the values of the input form by register name
     //? register() : register the input form by register name
     //? handleSubmit() : submit the input form by register name and send object with values
@@ -23,24 +26,21 @@ export const SignIn = ({showHideModal}) => {
     const onSub = (_bodyData) => {
         setError(null)
         console.log(_bodyData)
-        // signIn(_bodyData)
+        signIn(_bodyData)
     }
-
     const signIn = async (_bodyData) => {
         setLoading(true)
         try {
-            // const { data } = await fetchSignUp(_bodyData)
-            // console.log(data)
-            // if(data._id){
-            //     showHideModal()
-            // }
+            const { data } = await fetchSignIn(_bodyData)
+            console.log(data)
+            if(data.token){
+                hideModal()
+            }
         } catch (error) {
-            console.log(error.data.err_msg)
             setError(error.data.err_msg)
         }
         setLoading(false)
     }
-
     return (
         <>
             <div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -56,9 +56,9 @@ export const SignIn = ({showHideModal}) => {
                         </h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                             Or{' '}
-                            <Link href={"/"} className="font-medium text-indigo-600 hover:text-indigo-500">
+                            <button  onClick={()=>changeModalToggle()} className="font-medium text-indigo-600 hover:text-indigo-500">
                                 Sign Up Now
-                            </Link>
+                            </button>
                         </p>
                     </div>
 
@@ -67,8 +67,8 @@ export const SignIn = ({showHideModal}) => {
 
                     <form onSubmit={handleSubmit(onSub)} className="mt-8 space-y-6" >
                         <div className="-space-y-px rounded-md shadow-sm">
-                      
-                       
+
+
                             <div>
 
                                 <input
@@ -90,8 +90,8 @@ export const SignIn = ({showHideModal}) => {
                                 />
                                 {errors.password && <p className='m-0 p-0 text-red-500'>{errors.password.message}</p>}
                             </div>
-                   
-                            {  error && <p className='m-0 p-0 text-red-500'>{error}</p>}
+
+                            {error && <p className='m-0 p-0 text-red-500'>{error}</p>}
                         </div>
 
                         <div className="flex items-center justify-between">
@@ -107,7 +107,7 @@ export const SignIn = ({showHideModal}) => {
                         </div>
 
                         <div className='flex justify-evenly flex-row-reverse'>
-                           
+
                             <button
                                 type="submit"
                                 className="group relative flex w-2/5 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
@@ -118,7 +118,7 @@ export const SignIn = ({showHideModal}) => {
                                 Sign In
                             </button>
                             <button
-                             onClick={()=>showHideModal()}
+                                onClick={() => hideModal()}
                                 type="button"
                                 className=" group relative flex w-2/5 justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
                             >
@@ -127,7 +127,7 @@ export const SignIn = ({showHideModal}) => {
                                 </span>
                                 Close
                             </button>
-                            
+
                         </div>
                     </form>
                 </div>

@@ -1,4 +1,4 @@
-import { LockClosedIcon } from '@heroicons/react/20/solid'
+import { LockClosedIcon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,8 +6,11 @@ import { joiResolver } from '@hookform/resolvers/joi'
 import { authValidation } from '../../shared/validation/authValidation'
 import { fetchSignUp } from '../../shared/services/serviceAuth'
 import Loading from '../../shared/components/loading'
+import useAuth from '../../shared/hooks/useAuth'
 
-export const SignUp = ({showHideModal}) => {
+export const SignUp = ({ }) => {
+    const { modal: { hideModal,changeModalToggle } } = useAuth()
+
     // Reack hook form
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: joiResolver(authValidation.registerSchema) })
     //? getValues() : get the values of the input form by register name
@@ -24,7 +27,6 @@ export const SignUp = ({showHideModal}) => {
         setError(null)
         //? Api no need confirmPassword
         delete _bodyData.confirmPassword
-        console.log(_bodyData)
         signUp(_bodyData)
     }
 
@@ -32,17 +34,14 @@ export const SignUp = ({showHideModal}) => {
         setLoading(true)
         try {
             const { data } = await fetchSignUp(_bodyData)
-            console.log(data)
-            if(data._id){
-                showHideModal()
+            if (data._id) {
+                changeModalToggle()
             }
         } catch (error) {
-            console.log(error.data.err_msg)
             setError(error.data.err_msg)
         }
         setLoading(false)
     }
-
     return (
         <>
             <div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -58,9 +57,9 @@ export const SignUp = ({showHideModal}) => {
                         </h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                             Or{' '}
-                            <Link href={"/"} className="font-medium text-indigo-600 hover:text-indigo-500">
-                                Sign Up as Seller
-                            </Link>
+                            <button onClick={()=>changeModalToggle()} className="font-medium text-indigo-600 hover:text-indigo-500">
+                                Login
+                            </button>
                         </p>
                     </div>
 
@@ -120,7 +119,7 @@ export const SignUp = ({showHideModal}) => {
                                 />
                                 {errors.confirmPassword && <p className='m-0 p-0 text-red-500'>{errors.confirmPassword.message}</p>}
                             </div>
-                            {  error && <p className='m-0 p-0 text-red-500'>{error}</p>}
+                            {error && <p className='m-0 p-0 text-red-500'>{error}</p>}
                         </div>
 
                         <div className="flex items-center justify-between">
@@ -135,17 +134,28 @@ export const SignUp = ({showHideModal}) => {
                             </div>
                         </div>
 
-                        <div>
-                            <button type='button' onClick={()=>showHideModal()}>Close</button>
+                        <div className='flex justify-evenly flex-row-reverse'>
+
                             <button
                                 type="submit"
-                                className="group relative flex w-full justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="group relative flex w-2/5 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                                     <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true" />
                                 </span>
                                 Sign Up
                             </button>
+                            <button
+                                onClick={() => hideModal()}
+                                type="button"
+                                className=" group relative flex w-2/5 justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
+                            >
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+                                    <XMarkIcon className="h-5 w-5 text-red-400 group-hover:text-red-400" aria-hidden="true" />
+                                </span>
+                                Close
+                            </button>
+
                         </div>
                     </form>
                 </div>

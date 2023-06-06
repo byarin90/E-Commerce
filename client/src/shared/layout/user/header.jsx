@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import Modal from '../../components/modals/modal'
 import { SignUp } from '../../../components/auth/signUp'
+import { SignIn } from '../../../components/auth/login'
 // Main navigation navigation tabs
 const navigation = [
     { name: 'Home', href: '/', current: true },
@@ -24,7 +25,7 @@ function classNames(...classes) {
 
 export const Header = () => {
     const nav = useNavigate()
-    const { user, modal: { isSignIn, show, showHideModal } } = useAuth()
+    const { user, modal: { isSignIn, show, showHideModal, signInModal, signUpModal } } = useAuth()
 
     return (
         <Disclosure as="nav" className="bg-gray-800">
@@ -111,12 +112,26 @@ export const Header = () => {
                                             {avatarNavigate.map((item, i) => (
                                                 <Menu.Item key={i}>
                                                     {({ active }) => (
-                                                        <Link
-                                                            to={item.href}
-                                                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
+                                                        <button
+                                                            onClick={() => {
+                                                                if (item.name != 'Login' && item.name != 'Register'){
+                                                                    nav(item.href)
+                                                                }else{
+                                                                    switch (item.name) {
+                                                                        case 'Login':
+                                                                            signInModal()
+                                                                            break;
+                                                                        case 'Register':
+                                                                            signUpModal()
+                                                                            break;
+                                                                    }
+                                                                }
+                                                                 
+                                                            }}
+                                                            className={classNames(active ? 'bg-gray-100' : '', 'w-full block px-4 py-2 text-sm text-gray-700')}
                                                         >
                                                             {item.name}
-                                                        </Link>
+                                                        </button>
                                                     )}
                                                 </Menu.Item>
 
@@ -149,7 +164,11 @@ export const Header = () => {
                     </Disclosure.Panel>
 
                     <Modal open={show} >
-                        <SignUp showHideModal={showHideModal} />
+                        {isSignIn ?
+                            <SignIn  />
+                            :
+                            <SignUp  />
+                        }
                     </Modal>
                 </>
             )}

@@ -42,7 +42,6 @@ const Home = () => {
 */
 
   const {user,modal:{isSignIn,show,showHideModal}} = useAuth()
-  console.log(isSignIn,show)
  
   return (
     <div>

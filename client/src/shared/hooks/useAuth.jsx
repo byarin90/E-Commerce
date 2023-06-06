@@ -8,7 +8,6 @@ const useAuth = () => {
     const dispatch = useDispatch()
     const showHideModal =()=>{
         dispatch(showAuthModal())
-        return show
     }
     const modal ={
         show,

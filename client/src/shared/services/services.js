@@ -2,7 +2,6 @@ import axios from "axios";
 //?Service for API calls using axios for every request(GET, POST, PUT, DELETE)
 
 export const getApi = async(url) => {
-    console.log(url);
 
     try {
         const res = await axios({
@@ -15,7 +14,7 @@ export const getApi = async(url) => {
         });
         return res;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw error;
     }
 }
@@ -33,7 +32,7 @@ export const postApi = async(url, bodyData) => {
         });
         return res;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw error;
     }
 }
@@ -50,7 +49,7 @@ export const putApi = async(url, bodyData) => {
         });
         return res;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw error;
     }
 }
@@ -66,7 +65,7 @@ export const deleteApi = async(url) => {
         });
         return res;
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         throw error;
     }
 }

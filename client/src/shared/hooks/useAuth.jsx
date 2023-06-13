@@ -12,7 +12,6 @@ const useAuth = () => {
     const dispatch = useDispatch()
     const nav = useNavigate()
 
-    console.log(user)
 
 
 
@@ -47,7 +46,6 @@ const useAuth = () => {
         nav('/')
     }
     const getUser = () => {
-        console.log("work")
         if (user == null) {
             dispatch(getUserInfo())
         } else if (error.erorr_code == ERROR_AUTH) {
@@ -60,7 +58,6 @@ const useAuth = () => {
 
     const checkAuth = async () => {
             const {data} = await fetchCheckAuth()
-            console.log(data)
             if(data.erorr_code == ERROR_AUTH){
                 signOut()
             }

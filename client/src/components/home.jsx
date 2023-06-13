@@ -44,7 +44,6 @@ const Home = () => {
 */
   const myInfo =async () =>{
     const {data} = await getApi(MY_INFO_URL)
-    console.log(data)
   }
   const {user,modal:{isSignIn,show,showHideModal}} = useAuth()
  

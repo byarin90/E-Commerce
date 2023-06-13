@@ -25,19 +25,16 @@ export const SignIn = ({ }) => {
     // calling from handleSubmit(onSub) and return as callback the object with values
     const onSub = (_bodyData) => {
         setError(null)
-        console.log(_bodyData)
         signIn(_bodyData)
     }
     const signIn = async (_bodyData) => {
         setLoading(true)
         try {
             const { data } = await fetchSignIn(_bodyData)
-            console.log(data)
             if (data.login) {
                  getUser()
             }
         } catch (error) {
-            console.log(error)
             setError(error.data.err_msg)
         }
         setLoading(false)

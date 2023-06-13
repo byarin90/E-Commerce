@@ -9,7 +9,7 @@ export const authUser = (req, res, next) => {
         console.log(token)
             //! Check if token isExsist
         if (!token) {
-            return res.status(401).json({ err_msg: "you don't have a token for this end-point" })
+            return res.status(401).json({ err_msg: "you don't have a token for this end-point", erorr_code: "MW403" })
         }
 
         //? Decode token and verify it
@@ -22,7 +22,7 @@ export const authUser = (req, res, next) => {
         next();
     } catch (err) {
         //! if catch error , return error (invalid token or expired token) with message
-        return res.json({ err, msg: "invalid decodeing" })
+        return res.json({ err, msg: "invalid decodeing", erorr_code: "MW403" })
 
     }
 }
@@ -49,7 +49,7 @@ export const authAdmin = (req, res, next) => {
 
     } catch (err) {
         //! if catch error , return error (invalid token or expired token) with message
-        return res.json({ err, msg: "invalid decodeing" })
+        return res.json({ err, msg: "invalid decodeing", erorr_code: "MW403" })
 
     }
 }

@@ -17,8 +17,8 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }));
-
 app.use(cookieParser());
+
 //TODO:Server Port
 const port = process.env.PORT
     //TODO: app.use(express.json()) means to parse JSON data

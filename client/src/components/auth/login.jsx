@@ -1,5 +1,5 @@
 import { LockClosedIcon, XMarkIcon } from '@heroicons/react/20/solid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { joiResolver } from '@hookform/resolvers/joi'
@@ -9,7 +9,7 @@ import Loading from '../../shared/components/loading'
 import useAuth from '../../shared/hooks/useAuth'
 
 export const SignIn = ({ }) => {
-    const { modal: { hideModal,changeModalToggle } } = useAuth()
+    const { modal: { hideModal, changeModalToggle }, getUser, user } = useAuth()
 
     // Reack hook form
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: joiResolver(authValidation.loginSchema) })
@@ -33,14 +33,22 @@ export const SignIn = ({ }) => {
         try {
             const { data } = await fetchSignIn(_bodyData)
             console.log(data)
-            if(data.token){
-                hideModal()
+            if (data.login) {
+                 getUser()
             }
         } catch (error) {
+            console.log(error)
             setError(error.data.err_msg)
         }
         setLoading(false)
     }
+
+    useEffect(() => {
+        if (user && user.name) {
+            hideModal()
+        }
+    }, [user])
+
     return (
         <>
             <div className="flex min-h-full items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -56,7 +64,7 @@ export const SignIn = ({ }) => {
                         </h2>
                         <p className="mt-2 text-center text-sm text-gray-600">
                             Or{' '}
-                            <button  onClick={()=>changeModalToggle()} className="font-medium text-indigo-600 hover:text-indigo-500">
+                            <button onClick={() => changeModalToggle()} className="font-medium text-indigo-600 hover:text-indigo-500">
                                 Sign Up Now
                             </button>
                         </p>

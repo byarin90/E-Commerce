@@ -2,6 +2,8 @@ import axios from "axios";
 //?Service for API calls using axios for every request(GET, POST, PUT, DELETE)
 
 export const getApi = async(url) => {
+    console.log(url);
+
     try {
         const res = await axios({
             method: 'GET',

@@ -1,14 +1,14 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
+import useAuth from '../../hooks/useAuth'
 
-export default function Modal({children,open}) {
-
-  
+export default function Modal({children,open,setOpen}) {
   
   const cancelButtonRef = useRef(null)
+
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={()=>false}>
+      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

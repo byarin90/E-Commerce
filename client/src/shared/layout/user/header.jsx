@@ -34,7 +34,7 @@ function classNames(...classes) {
 }
 
 export const Header = () => {
-    const { user, checkAuth, modal: { isSignIn, show } } = useAuth()
+    const { user, checkAuth, modal: { isSignIn, show,hideModal } } = useAuth()
 
     const checkToken = async () => {
         await checkAuth()
@@ -72,7 +72,7 @@ export const Header = () => {
                     {/* Render Navigate for Mobile */}
                     <MobileNavigation navigation={user ? userNavigation : navigation} classNames={classNames}/>
 
-                    <Modal open={show} >
+                    <Modal open={show} setOpen={hideModal}>
                         {isSignIn ?
                             <SignIn />
                             :

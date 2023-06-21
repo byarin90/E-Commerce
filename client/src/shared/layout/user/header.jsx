@@ -37,8 +37,10 @@ export const Header = () => {
     const { user, checkAuth, modal: { isSignIn, show,hideModal } } = useAuth()
 
     const checkToken = async () => {
+        console.log('check token')
         await checkAuth()
     }
+    
     useEffect(() => {
         checkToken()
     }, [])

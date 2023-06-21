@@ -2,6 +2,9 @@ import { compare, hash } from "bcrypt";
 import { UserModel } from "../models/userModel.js";
 import userValid from "../validations/userValidations.js";
 import { createToken } from "../utils/jwt.js";
+import { RefreshTokenModel } from "../models/refreshTokenModel.js";
+import secret from "../config/secret.js";
+import { clearCookies } from "../middleware/authentication.js";
 
 const authCtrl = {
     register: async(req, res) => {
@@ -60,10 +63,19 @@ const authCtrl = {
             }
 
             //?User is found and password is correct
-            // TODO: Create a token
-            const token = createToken(user)
-                //? Send the token in a cookie
-            res.cookie('token', token, { httpOnly: true, sameSite: "lax" });
+            // TODO: Create a accessToken and refreshToken
+            const accessToken = createToken(user, secret.ACCESS_TOKEN_TTL)
+            const refreshToken = createToken(user, secret.REFRESH_TOKEN_TTL)
+                //Todo: Save the refreshToken in the database
+
+            await RefreshTokenModel.deleteMany({ user: user._id })
+            const newRefreshToken = new RefreshTokenModel({ token: refreshToken, user: user._id })
+            await newRefreshToken.save()
+
+            //? Send the accessToken and refreshToken to cookies
+            res.cookie('accessToken', accessToken, { httpOnly: true, sameSite: "lax" });
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: "lax" });
+
             res.status(200).json({ message: "Logged in", login: true });
         } catch (err) {
             console.log(err)
@@ -72,7 +84,8 @@ const authCtrl = {
     },
     logout: async(req, res) => {
         try {
-            res.clearCookie('token').status(200).json({ message: "Logged out" });
+            clearCookies(res);
+            return res.status(200).json({ message: "Logged out", login: false });
         } catch (err) {
             console.log(err)
             return res.status(500).json({ err_msg: err })

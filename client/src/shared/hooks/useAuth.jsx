@@ -57,10 +57,18 @@ const useAuth = () => {
     }
 
     const checkAuth = async () => {
-            const {data} = await fetchCheckAuth()
-            if(data.erorr_code == ERROR_AUTH){
-                signOut()
+            try{
+                const {data} = await fetchCheckAuth()
+                console.log(data)
+            }catch(error){
+                console.log(error.data.error_code)
+                if(error.data.error_code == ERROR_AUTH){
+                    signOut()
+                }
+                throw error
             }
+          
+       
     }
 
     const modal = {

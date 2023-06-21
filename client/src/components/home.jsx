@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import useAuth from '../shared/hooks/useAuth'
 import Modal from '../shared/components/modals/modal'
 import { SignUp } from './auth/signUp'
+import { getApi } from '../shared/services/services'
+import { MY_INFO_URL } from '../shared/constant/constant'
 
 const Home = () => {
 
@@ -40,18 +42,17 @@ const Home = () => {
   background-size: cover - bg-cover
   background-position: center - bg-center
 */
-
+  const myInfo =async () =>{
+    const {data} = await getApi(MY_INFO_URL)
+  }
   const {user,modal:{isSignIn,show,showHideModal}} = useAuth()
-  console.log(isSignIn,show)
  
-  const [open, setOpen] = useState(true)
   return (
     <div>
       <h1>Home</h1>
-
-      <Modal open={show} >
-          <SignUp  showHideModal={showHideModal}/>
-      </Modal>
+      <button onClick={()=>{
+        myInfo()
+      }}>My iNfo</button>
     </div>
   )
 }

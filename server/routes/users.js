@@ -23,6 +23,6 @@ router.get('/myInfo', authUser, userCtrl.myProfile)
 //? Router get all users
 router.get('/', authAdmin, adminUserCtrl.getAllUsers)
 
-
+router.post('/logout', authCtrl.logout)
 
 export default router

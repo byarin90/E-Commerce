@@ -62,7 +62,17 @@ const authCtrl = {
             //?User is found and password is correct
             // TODO: Create a token
             const token = createToken(user)
-            return res.status(200).json({ token })
+                //? Send the token in a cookie
+            res.cookie('token', token, { httpOnly: true, sameSite: "lax" });
+            res.status(200).json({ message: "Logged in", login: true });
+        } catch (err) {
+            console.log(err)
+            return res.status(500).json({ err_msg: err, login: false })
+        }
+    },
+    logout: async(req, res) => {
+        try {
+            res.clearCookie('token').status(200).json({ message: "Logged out" });
         } catch (err) {
             console.log(err)
             return res.status(500).json({ err_msg: err })
